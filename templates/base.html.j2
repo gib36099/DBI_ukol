@@ -1,0 +1,68 @@
+{% macro  value(name) -%}
+    {{ request.args.get(name) or '' }}
+{%- endmacro -%}
+
+
+
+
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+
+  <title>{%block title%}Home{%endblock%}</title>
+
+  <meta name="description" content="Flask pokus">
+  <meta name="author" content="Marek">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favico.png') }}" />
+
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+</head>
+
+<body>
+
+
+  <ul id="nav">
+    <li><a href="{{ url_for('index') }}">Domů</a></li>
+    <li><a href="{{ url_for('info') }}">Info</a></li>
+    <li><a href="{{ url_for('soucet') }}">Soucet</a></li>
+
+  </ul>
+<p class="login">
+  {% if 'login' in session %}
+    Jsi přihlášen jako <strong>{{session['login']}}</strong>.
+    <a href="{{url_for('logout')}}">LogOut</a>
+  {% else %}
+    Nejsi přihlášen! <a href="{{url_for('login')}}">LogIn</a>
+  {% endif %}
+</p>
+  {% block obsah %}
+
+    <h1>Home</h1>
+<div class="maindiv">Haha</div>
+
+
+  {% endblock obsah %}
+
+</br>
+  {% for message in get_flashed_messages() %}
+    <li class="flash">{{message}}</p>
+  {% endfor %}
+
+<footer>
+    <p>Běží na:
+    <a href="https://www.spseol.cz">Vyšší odborná škola a Střední průmyslová škola elektrotechnická Olomouc</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+</html>
