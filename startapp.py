@@ -26,6 +26,27 @@ def prihlasit(function):
 ############################################################################
 
 
+@app.route("/login/", methods = ['GET'])
+def login():
+    return render_template('login.html.j2')
+
+
+@app.route("/login/", methods = ['POST'])
+def login_post():
+    login = request.form.get('login')
+    passw = request.form.get('passw')
+    if 'login' in session:
+        flash('Už jsi přihlášen jako {}'.fromat(session['login']) )
+        return redirect(url_for('index'))
+    if login=='Admin' and passw=='heslo123':
+        session['login'] = login
+        flash('Úspěšné přihlášení')
+        return render_template("base.html.j2")
+    else:
+        flash('Špatné heslo')
+    return redirect(url_for('login'))
+
+
 @app.route("/")
 def index():
     if 'login' in session:
@@ -44,63 +65,11 @@ def info():
         return redirect(url_for('login', next_page=request.path))
 
 
-
-@app.route("/soucet/", methods=['GET', 'POST'])
-def soucet():
-    a = request.args.get('a')
-    b = request.args.get('b')
-    try:
-        data = int(a) + int(b)
-    except  TypeError:
-        data = ''
-    except ValueError:
-        data = 'Jen čísla'
-    if 'login' in session:
-        return render_template("soucet.html.j2", data=data)
-    else:
-        flash('Nejdřív se přihlas')
-        return redirect(url_for('login', next_page=request.path))
-
-
-
-@app.route("/login/", methods = ['GET'])
-def login():
-    return render_template('login.html.j2')
-
-
-@app.route("/login/", methods = ['POST'])
-def login_post():
-    login = request.form.get('login')
-    passw = request.form.get('passw')
-    next_page = request.args.get('next_page')
-    if 'login' in session:
-        flash('Už jsi přihlášen jako {}'.fromat(session['login']) )
-        return redirect(url_for('index'))
-    if login=='karel' and passw=='bla':
-        session['login'] = login
-        flash('Úspěšné přihlášení')
-        if next_page:
-            return redirect(next_page)
-    else:
-        flash('Špatné heslo')
-    return redirect(url_for('login'))
-
-
 @app.route("/logout/", methods = ['GET'])
 def logout():
     session.pop('login', None)
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
-
-@app.route("/text/")
-def text():
-    return """
-
-<h1>Text</h1>
-
-<p>toto je text</p>
-
-"""
 
 
 ############################################################################

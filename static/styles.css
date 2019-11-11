@@ -45,14 +45,18 @@ footer {
 
 .flash{
   width: 80%;
-  margin-right: auto;
+  margin-left: auto;
+  display: inline;
   padding: 1ex;
-  color: blue;
+  color: red;
   font-weight: bolder;
   border: solid, 1px,
 }
 .maindiv{
-  
+
 }
 
+.input{
+  width: 40ex
+}
 /*# sourceMappingURL=styles.css.map */
